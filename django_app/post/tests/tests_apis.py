@@ -4,6 +4,8 @@ from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APILiveServerTestCase
 
+from post.models import Post
+
 User = get_user_model()
 
 
@@ -28,7 +30,8 @@ class PostTest(APILiveServerTestCase):
     def test_cannot_create_post_not_authenticated(self):
         url = reverse('post-create')
         response = self.client.post(url)
-        self.assertEqual(response.status_code, status.HTTO_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(Post.objects.exists(), False)
 
     def test_post_list(self):
         pass
