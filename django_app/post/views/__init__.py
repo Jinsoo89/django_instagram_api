@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import Post, PostPhoto
+from ..models import Post, PostPhoto
 
 User = get_user_model()
 

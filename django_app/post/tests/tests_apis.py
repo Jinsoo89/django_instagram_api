@@ -1,6 +1,10 @@
+import random
+
 from django.contrib.auth import get_user_model
+from django.urls import NoReverseMatch
+from django.urls import resolve
+from django.urls import reverse
 from rest_framework import status
-from rest_framework.reverse import reverse
 from rest_framework.test import APILiveServerTestCase
 
 from post.models import Post
@@ -20,34 +24,43 @@ class PostTest(APILiveServerTestCase):
         )
         return user
 
-    def create_post(self):
-        # Post.objects.create(
-        #     author=self.create_user(),
-        #     created_date=self.test_created_date,
-        # )
+    def create_user_and_login(self):
+        self.create_user()
+        self.client.login(
+            username=self.test_username,
+            password=self.test_password,
+        )
 
-        url = reverse('post-create')
-        data = {
-            'author': self.test_username,
-            'created_date': self.test_created_date,
-        }
-        response = self.client.post(url, data, format='json')
-        print(response.status_code)
-        return response
+    def test_apis_url_exist(self):
+        try:
+            resolve('/api/post/')
+            resolve('/api/post/1/')
+        except NoReverseMatch as e:
+            self.fail(e)
 
-    def test_create_post(self):
+    def create_post(self, num=1):
+        url = reverse('api:post-list')
+
+        for i in range(num):
+            response = self.client.post(url)
+            if num == 1:
+                return response
+
+    def test_post_create(self):
         # Post를 만들 유저를 생성 및 로그인
         user = self.create_user()
         self.client.login(username=self.test_username,
                           password=self.test_password)
-        # Post를 생성하는 API주소를 reverse
-        url = reverse('post-create')
-        # Post를 생성하는 API주소에 POST요청, response를 받아옴
-        response = self.create_post(url)
-        print(response.status_code)
+
+        response = self.create_post()
 
         # response의 status_code가 201(created)이어야 함
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        # response의 key값 검사
+        self.assertIn('author', response.data)
+        self.assertIn('created_date', response.data)
+
         # 생성 후 Post인스턴스가 총 한개어여함
         self.assertEqual(Post.objects.count(), 1)
         # 생성된 Post인스턴스의 author pk(id)가 테스트시 생성한 User의 pk(id)와 같아야함
@@ -58,12 +71,30 @@ class PostTest(APILiveServerTestCase):
         #                  self.test_created_date)
 
     def test_cannot_create_post_not_authenticated(self):
-        url = reverse('post-create')
+        url = reverse('api:post-list')
         response = self.client.post(url)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         self.assertEqual(Post.objects.exists(), False)
 
     def test_post_list(self):
+        # Post 생성 위해 유저 생성 후 로그인
+        self.create_user_and_login()
+
+        # 생성할 Post개수 지정
+        num = random.randrange(1, 50)
+
+        # num만큼 Post생성
+        self.create_post(num)
+        url = reverse('api:post-list')
+        response = self.client.get(url)
+
+        # status_code 확인
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # num만큼 생성되었는지 확인
+        self.assertEqual(len(response.data), num)
+
+    def test_post_update_partial(self):
         pass
 
     def test_post_update(self):
