@@ -45,14 +45,17 @@ class PostTest(APITestCaseAuthMixin, APILiveServerTestCase):
         self.assertIn('author', response.data)
         self.assertIn('created_date', response.data)
 
+        # response의 author값 검사
+        response_author = response.data['author']
+        self.assertIn('pk', response_author)
+        self.assertIn('username', response_author)
+
         # 생성 후 Post인스턴스가 총 한개어여함
         self.assertEqual(Post.objects.count(), 1)
+
         # 생성된 Post인스턴스의 author pk(id)가 테스트시 생성한 User의 pk(id)와 같아야함
         post = Post.objects.first()
         self.assertEqual(post.author.id, user.id)
-        # self.assertEqual(response.data.get('author'), self.test_username)
-        # self.assertEqual(response.data.get('created_date'),
-        #                  self.test_created_date)
 
     def test_cannot_create_post_not_authenticated(self):
         url = reverse('api:post-list')
@@ -77,6 +80,13 @@ class PostTest(APITestCaseAuthMixin, APILiveServerTestCase):
 
         # num만큼 생성되었는지 확인
         self.assertEqual(len(response.data), num)
+
+        # 생성된 response의 author필드가 pk가 아닌 dict형태로 전될되는지 확인
+        for item in response.data:
+            self.assertIn('author', item)
+            item.author = item['author']
+            self.assertIn('pk', item.author)
+            self.assertIn('username', item.author)
 
     def test_post_update_partial(self):
         pass
