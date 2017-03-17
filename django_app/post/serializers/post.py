@@ -33,14 +33,14 @@ post에 연결된 PostPhoto를 리스트 내부의 Object형태로 리턴
 
 class PostSerializer(serializers.ModelSerializer):
     author = UserSerializer(read_only=True)
-    postphoto_set = PostPhotoSerializer(many=True, read_only=True)
+    photo_list = PostPhotoSerializer(many=True, read_only=True, source='postphoto_set')
 
     class Meta:
         model = Post
         fields = (
             'pk',
             'author',
-            'postphoto_set',
+            'photo_list',
             'created_date',
         )
         read_only_fields = (

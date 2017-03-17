@@ -46,6 +46,13 @@ SECRET_KEY = config['django']['secret_key']
 # SECURITY WARNING: don't run with debug turned on in production!
 ALLOWED_HOSTS = config['django']['allowed_hosts']
 
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.CursorPagination',
+    'PAGE_SIZE': 2
+}
+
+
 # Application definition
 
 INSTALLED_APPS = [

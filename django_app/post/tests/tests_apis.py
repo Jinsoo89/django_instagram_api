@@ -96,6 +96,14 @@ class PostTest(APITestCaseAuthMixin, APILiveServerTestCase):
             item.author = item['author']
             self.assertIn('pk', item.author)
             self.assertIn('username', item.author)
+            # response의 postphoto_set값 검사
+            response_postphoto_set = item['photo_list']
+            self.assertIsInstance(response_postphoto_set, list)
+            for postphoto_object in response_postphoto_set:
+                self.assertIn('pk', postphoto_object)
+                self.assertIn('photo', postphoto_object)
+                self.assertIn('created_date', postphoto_object)
+
 
     def test_post_update_partial(self):
         pass
