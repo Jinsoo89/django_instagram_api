@@ -1,0 +1,21 @@
+{
+  "name": "instagram_api",
+  "homepage": "https://github.com/Jinsoo89/django_instagram_api",
+  "authors": [
+    "Jinsoo89 <hello.python89@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "swiper": "^3.4.2",
+    "jquery": "^3.2.0"
+  }
+}
