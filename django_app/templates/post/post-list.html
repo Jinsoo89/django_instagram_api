@@ -2,13 +2,13 @@
 
 {% block content %}
     <div class="post-list-container">
-        {% for post in posting %}
+        {% for post in posts %}
             <article class="post">
                 <header class="post-header">
                     <span class="header-username">{{ post.author.username }}</span>
 {#                    포스트 삭제를 위한 form#}
                     {% if user == post.author %}
-                        <form action="{% url 'post:post_delete' post_id=post.id %}"
+                        <form action=""
                               method="POST"
                               class="post_delete">{% csrf_token %}
                             <button type="submit" class="btn">글 삭제</button>
@@ -16,9 +16,12 @@
                     {% endif %}
                     <span class="header-date">{{ post.created_date }}</span>
                 </header>
+                <!-- post내부에서 postphoto_set을 루핑하여 postphoto 리스트 작성-->
                 <div class="post-image-container">
-                    <img src="{{ MEDIA_URL }}{{ post.photo }}" alt=""
+                    {% for postphoto in post.postphoto_set.all %}
+                    <img src="{{ postphoto.photo.url }}" alt=""
                          class="post-image">
+                    {% endfor %}
                 </div>
                 <div class="post-bottom-container">
 {#                    포스트에 컨텐츠가 없이 댓글에만 나오게함#}
@@ -45,7 +48,7 @@
                                     <span class="comment-author">{{ comment.author.username }}</span>
                                     <span class="comment-content">{{ comment.content }}</span>
                                     {% if user == comment.author %}
-                                        <form action="{% url 'post:comment_delete' post_id=post.id comment_id=comment.id %}"
+                                        <form action=""
                                               method="POST"
                                               class="comment_delete">{% csrf_token %}
                                             <button type="submit" class="btn">삭제</button>
@@ -56,7 +59,7 @@
                         {% endif %}
                     </div>
                     <div class="post-comment-form-container" clearfix>
-                        <form action="{% url 'post:like_toggle' post_id=post.id %}"
+                        <form action=""
                               method="POST" class="form-like">{% csrf_token %}
                             <button
                                     type="submit"
@@ -68,7 +71,7 @@
               {% endif %}">
                             </button>
                         </form>
-                        <form action="{% url 'post:comment_add' post_id=post.id %}"
+                        <form action=""
                               method="POST" class="form-class">{% csrf_token %}
                             <input
                                     type="text"
@@ -81,7 +84,7 @@
             </article>
         {% endfor %}
 
-        <a href="{% url 'post:add' %}" class="btn-add-post">Add Post</a>
+        <a href="" class="btn-add-post">Add Post</a>
     </div>
 
 {% endblock %}
