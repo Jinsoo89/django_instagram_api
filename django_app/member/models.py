@@ -33,26 +33,36 @@ class MyUser(AbstractUser):
     )
 
     def follow(self, user):
-        self.following_relations.create(
+        """
+        이미 follow한 사람일 경우 raise Exception(msg)
+        상대방이 나를 block했을 경우 raise Exception(msg)
+        """
+        self.relations_from_user.create(
             to_user=user,
+            relation_type=Relationship.TYPE_FOLLOW
         )
-
-    def unfollow(self, user):
-        self.following_relations.filter(
-            to_user=user
-        ).delete()
 
     def block(self, user):
         pass
 
-    def to_dict(self):
-        ret = {
-            'pk': self.pk,
-            'username': self.username,
-            'first_name': self.first_name,
-            'last_name': self.last_name,
-        }
-        return ret
+    @property
+    def following(self):
+        relations = self.relations_from_user.filter(
+            relation_type=Relationship.TYPE_FOLLOW
+        )
+        return MyUser.objects.filter(id__in=relations.values('to_user_id'))
+
+    @property
+    def followers(self):
+        pass
+
+    @property
+    def block_users(self):
+        pass
+
+    @property
+    def friends(self):
+        pass
 
 
 class Relationship(models.Model):
