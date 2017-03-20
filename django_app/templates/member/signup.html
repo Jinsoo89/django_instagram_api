@@ -1,0 +1,30 @@
+{% extends 'common/base.html' %}
+
+{% block content %}
+    <form action="" method="POST">{% csrf_token %}
+        {% if form.non_field_errors %}
+            {{ form.non_field_errors }}
+        {% endif %}
+
+        {% for field in form %}
+            <div>
+                {{ field.label_tag }}
+                {{ field }}
+                {{ field.errors }}
+            </div>
+        {% endfor %}
+        <div>
+            <button type="submit">signup!</button>
+        </div>
+    </form>
+{% endblock %}
+
+{##}
+{#{% block content %}#}
+{#    <div>#}
+{#        <form action="" method="POST">{% csrf_token %}#}
+{#            {{ form }}#}
+{#            <button type="submit">signup!</button>#}
+{#        </form>#}
+{#    </div>#}
+{#{% endblock %}#}

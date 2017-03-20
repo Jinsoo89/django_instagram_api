@@ -8,6 +8,7 @@ __dev*/
 *.sqlite3
 *.sqlite
 media/
+django_app/static/css/
 
 ### Django ###
 *.log

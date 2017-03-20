@@ -1,0 +1,27 @@
+<!--
+ html파일에서 POST요청을 보내기 위해서
+ form을 정의하고 input요소 2개의 name을
+ username, password로 설정
+ button type submit을 실행
+-->
+
+<form action="" method="POST">{% csrf_token %}
+    {% if form.non_field_errors %}
+        {{ form.non_field_errors }}
+    {% endif %}
+
+    {% for field in form %}
+    <div>
+        {{ field.label_tag }}
+        {{ field }}
+    </div>
+    {% endfor %}
+    <!--<label for="username">Username: </label>-->
+    <!--<input id="username" type="text" name="username"-->
+           <!--value="{{ username }}">-->
+    <!--<p></p>-->
+    <!--<label for="password">Password: </label>-->
+    <!--<input id="password" type="password" name="password" value="{{ password }}">-->
+    <!--<input type="submit" value="Login">-->
+    <button type="submit">Login</button>
+</form>
