@@ -3,11 +3,14 @@
         <span class="header-username">{{ post.author.username }}</span>
         {#                    포스트 삭제를 위한 form#}
         {% if user == post.author %}
-            <form action=""
-                  method="POST"
-                  class="post_delete">{% csrf_token %}
-                <button type="submit" class="btn">글 삭제</button>
-            </form>
+{#            <form action="{% url 'post:post-delete' pk=post.pk %}"#}
+{#                  method="POST"#}
+{#                  class="post_delete">{% csrf_token %}#}
+{#                <button type="submit" class="btn">글 삭제</button>#}
+{#            </form>#}
+            <a href="{% url 'post:post-delete' pk=post.pk %}" class="btn-container">
+            <button type="submit" class="btn">글 삭제</button>
+            </a>
         {% endif %}
         <span class="header-date">{{ post.created_date }}</span>
     </header>
