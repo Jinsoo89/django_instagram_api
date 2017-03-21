@@ -10,16 +10,19 @@
         TEMPLATE_DIR 변수 설정 TEMPLATE설정의 TEMPLATE_DIRS에 해당 변수 추가
     5. PostList CBV에 get메서드 작성 및 내부 쿼리를 return
 """
+from django.shortcuts import render
 from django.views import View
 from django.views.generic import DetailView
 from django.views.generic import ListView
 
-from post.models import Post
+from post.forms import PostForm
+from post.models.post import Post
 
 __all__ = (
     'PostList',
     'PostDetail',
     'PostDelete',
+    'PostCreate',
 )
 
 
@@ -33,6 +36,30 @@ class PostList(ListView):
     model = Post
     context_object_name = 'posts'
 
+
+class PostCreate(View):
+    """
+    PostForm을 사용
+        fields
+            content
+            photos
+    1. Post요청을 받았을때, 해당 request.user를 author로 하는 Post 인스턴스 생성
+    2. 만약 form.cleaned_data['content']가 빈 값이 아니면 PostComment 인스턴스 생성
+    3. request.FILES.getlist('photos')를 loop하며 PostPhoto 인스턴스 생성
+    4. return redirect('post:post-list')
+    """
+    form_class = PostForm
+    template_name = 'post/post_create.html'
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        context = {
+            'form': form,
+        }
+        return render(request, self.template_name, context)
+
+    def post(self):
+        pass
 
 class PostDetail(DetailView):
     """

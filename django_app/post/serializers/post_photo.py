@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from post.models import PostPhoto
+from post.models.post import PostPhoto
 
 __all__ = (
     'PostPhotoSerializer',

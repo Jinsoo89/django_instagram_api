@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from member.serializers import UserSerializer
-from post.models import Post
+from post.models.post import Post
 from post.serializers.post_photo import PostPhotoSerializer
 
 __all__ = (

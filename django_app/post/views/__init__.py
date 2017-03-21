@@ -6,9 +6,10 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 
-from ..models import Post, PostPhoto
+# from ..models.post import Post, PostPhoto
 
 from .post import *
+from .comment import *
 
 #
 # User = get_user_model()

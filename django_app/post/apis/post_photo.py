@@ -1,6 +1,6 @@
 from rest_framework import generics
 
-from post.models import PostPhoto
+from post.models.post import PostPhoto
 from post.serializers import PostPhotoSerializer
 
 __all__ = (

@@ -36,6 +36,9 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+# Login redirect
+LOGIN_URL = '/admin/'
+
 if DEBUG:
     CONFIG_FILE = os.path.join(CONF_DIR, 'settings_local.json')
 else:
