@@ -20,12 +20,12 @@ from django.contrib import admin
 
 # HttpResponse / HttpRequest를 위한 url
 from post.urls import views as post_urls
-
-#
 from post.urls import apis as post_apis_urls
+from member.urls import apis as member_apis_urls
 
 api_urlpatterns = [
     url(r'^post/', include(post_apis_urls)),
+    url(r'^member/', include(member_apis_urls)),
 ]
 
 urlpatterns = [
